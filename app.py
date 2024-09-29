@@ -14,10 +14,10 @@ def hello():
     hostname = socket.gethostname()
     print(hostname)
     IPAddr = socket.gethostbyname_ex(hostname)    
-    return f"The api is running on {IPAddr}"
+    return f"Hello, your OctoPi Webhooks are ready! <BR/> IP Address: {IPAddr[2][0]} <BR/> Use the URL: <a href='http://{os.getenv('HOST_NAME')}/octo-hook'>'http://{os.getenv('HOST_NAME')}/octo-hook'</a> in OctoPrint Webhooks"
 
 @app.route('/octo-hook', methods=['POST'])
-def post_colour_change():
+def octo_hook():
     audio = Audio()
     printer = request.json['deviceIdentifier']
     default_topic = f'_{request.json['topic'].replace(" ", "_")}'
