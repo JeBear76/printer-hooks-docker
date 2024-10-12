@@ -19,24 +19,18 @@ def hello():
 @app.route('/octo-hook', methods=['POST'])
 def octo_hook():
     audio = Audio()
+    voice = request.json['voice']
+    if(voice is None and voice == ""):
+        voice = get_voice()
     printer = request.json['deviceIdentifier']
     default_topic = f'_{request.json['topic'].replace(" ", "_")}'
-    topic = f'{printer}_{request.json['topic'].replace(" ", "_")}'
+    topic = f'{printer}_{request.json['topic'].replace(" ", "_")}_{voice.split("-")[1]}'
     message = f'{printer} {request.json['message']}'
     audio_file = f"./audio/{topic}.wav"
-    if not os.path.exists(audio_file):
+    if not os.path.exists(audio_file):        
         key = os.getenv('DEEPGRAM_API_KEY')
-        if(key is not None and key != ""):
-            with open('config.json') as config_file:
-                config = json.load(config_file)
-            if config['greeting'] is None:
-                config['greeting'] = "Hello, your OctoPi Webhooks are ready!"
-            if config['voice'] is None:
-                config['voice'] = "aura-asteria-en"
-            if config['device'] is None:
-                config['device'] = 1
-            print(json.dumps(config, indent=4))            
-            deepgramAssistant = DeepgramAssistant(voice=config['voice'])        
+        if(key is not None and key != ""):           
+            deepgramAssistant = DeepgramAssistant(voice=voice, key=key)        
             deepgramAssistant.speak(message, audio_file)
         else:
             audio_file = f"{default_topic}.wav"            
@@ -57,6 +51,13 @@ def octo_hook():
                 "status": "success",
                 "message": "Webhook processed successfully"
             }}'''
+
+def get_voice():
+    with open('config.json') as config_file:
+        config = json.load(config_file)
+        if config['voice'] is None:
+            return "aura-helios-en"
+        return config['voice']
 
 if __name__ == '__main__':
     app.run(debug=True)

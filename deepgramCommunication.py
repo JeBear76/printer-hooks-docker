@@ -30,7 +30,7 @@ class DeepgramAssistant:
 
     """
 
-    def __init__(self, DEBUG=False, voice="aura-asteria-en"):
+    def __init__(self, DEBUG=False, voice="aura-asteria-en", key=None):
         """
         Initializes a new instance of the DeepgramAssistant class.
 
@@ -38,7 +38,7 @@ class DeepgramAssistant:
             DEBUG (bool, optional): A flag indicating whether debug mode is enabled. Defaults to False.
             voice (str, optional): The voice model to use for speech synthesis. Defaults to "aura-asteria-en".
         """
-        self.client = DeepgramClient(api_key=os.getenv('DEEPGRAM_API_KEY'))
+        self.client = DeepgramClient(api_key=key)
         speakOptions.model = voice
         self.Debug=DEBUG
 
