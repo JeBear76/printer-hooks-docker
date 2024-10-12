@@ -19,8 +19,11 @@ def hello():
 @app.route('/octo-hook', methods=['POST'])
 def octo_hook():
     audio = Audio()
-    voice = request.json['voice']
-    if(voice is None and voice == ""):
+    try:
+        voice = request.json['voice']
+        if(voice is None and voice == ""):
+            voice = get_voice()
+    except:
         voice = get_voice()
     printer = request.json['deviceIdentifier']
     default_topic = f'_{request.json['topic'].replace(" ", "_")}'
@@ -55,7 +58,7 @@ def octo_hook():
 def get_voice():
     with open('config.json') as config_file:
         config = json.load(config_file)
-        if config['voice'] is None:
+        if config['voice'] is None or config['voice'] == "":
             return "aura-helios-en"
         return config['voice']
 
