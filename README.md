@@ -43,9 +43,24 @@ You can go to http://localhost
 Configure your Octopi Webhooks.  
 For this, the writer of the [OctoPrint-Webhooks](https://github.com/derekantrican/OctoPrint-Webhooks) wrote a README.
 
+You can add a specific voice for the printer in the DATA json under _Advanced_.
+For example.  
+```
+{
+  "deviceIdentifier":"@deviceIdentifier",
+  "apiSecret":"@apiSecret",
+  "topic":"@topic",
+  "message":"@message",
+  "extra":"@extra",
+  "voice":"aura-asteria-en"
+}
+```
+
+A full list of the deepGram voice models is available [here](https://developers.deepgram.com/docs/tts-models)
+
 ## DeepGram Config
 
-You can change the voice for the DeepGram API in the config.json.  
+You can change the default voice for the DeepGram API in the config.json.  
 I created the class for another project. The other 2 config settings are useless in this one.
 
 ## License
