@@ -17,6 +17,43 @@ I use DeepGram to generate the audio. If you don't provide the image with a DEEP
 [follow these instructions](https://gist.github.com/Stormwind99/e5ffc026a44ec2374f92864652d94854)  
 
 ## Installation
+
+### Using DockerHub
+1. Pull the image.
+```
+docker push jerepondumie/printer-webhooks:latest
+```
+2. Create an empty _audio_ folder somewhere.
+
+3. Run the container.  
+```
+# Windows WSL2 (Example)
+docker run \
+    -d \
+    -v ./audio:/usr/src/app/audio \
+    --mount type=bind,source=/mnt/wslg/PulseServer,target=/mnt/wslg/PulseServer \
+    -e HOST_NAME=$(hostname) \
+    -e PULSE_SERVER=unix:/mnt/wslg/PulseServer \
+    -e DEEPGRAM_API_KEY=$DEEPGRAM_API_KEY \
+    -p 80:5000 \
+    jerepondumie/printer-webhooks
+```
+
+```
+# Ubuntu 24.04 (Example)
+docker run \
+    -d \
+    --restart=always \
+    -v ./audio:/usr/src/app/audio \
+    --mount type=bind,source=/run/user/1000/pulse/native,target=/run/user/1000/pulse/native \
+    -e HOST_NAME=$(hostname) \
+    -e PULSE_SERVER=unix:/run/user/1000/pulse/native \
+    -e DEEPGRAM_API_KEY=<YOUR_DEEPGRAM_KEY> \
+    -p 80:5000 \
+    jerepondumie/printer-webhooks
+```
+
+### Manual
 1. Clone the repository:
     ```sh
     git clone https://github.com/jebear76/printer-hooks-docker.git
@@ -26,7 +63,7 @@ I use DeepGram to generate the audio. If you don't provide the image with a DEEP
 
 3. Setup your DeepGram API Key (optional)  
     ```
-        echo DEEPGRAM_API_KEY=<your key> > .env
+        echo DEEPGRAM_API_KEY=<YOUR_DEEPGRAM_KEY> > .env
         source .env
     ```  
 
