@@ -1,7 +1,7 @@
 import os
 import socket
 import json
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from audio import Audio
 from deepgramCommunication import DeepgramAssistant
 
@@ -50,10 +50,10 @@ def octo_hook():
     except:
         pass
     
-    return f'''{{
-                "status": "success",
-                "message": "Webhook processed successfully"
-            }}'''
+    return jsonify({
+        "status": "ok",
+        "message": "Webhook received successfully"
+    }), 200
 
 def get_voice():
     with open('config.json') as config_file:
